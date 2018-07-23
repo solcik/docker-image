@@ -1,0 +1,55 @@
+name: CD
+
+on:
+    push:
+        branches: [ master ]
+    schedule:
+        -   cron: "0 6 * * 1" # At 08:00 on Monday
+
+jobs:
+    build:
+        # See also https://docs.docker.com/docker-hub/builds/
+        name: PHP
+        runs-on: ubuntu-20.04
+        strategy:
+            matrix:
+                image:
+                    - 7.4-fpm-alpine
+                    - 7.4-fpm-alpine-dev
+                    - 7.4-fpm
+                    - 7.4-fpm-dev
+                    - 8.0-fpm-alpine
+                    - 8.0-fpm-alpine-dev
+                    - 8.0-fpm
+                    - 8.0-fpm-dev
+                    - 8.1-fpm-alpine
+                    - 8.1-fpm-alpine-dev
+                    - 8.1-fpm
+                    - 8.1-fpm-dev
+        env:
+            DOCKER_USER: ${{ secrets.DOCKER_USER }}
+            DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+            REPO_GITHUB: docker.pkg.github.com/${{ github.repository }}
+            REPO_HUB: davidsolc
+            IMAGE_ID: php
+            VERSION: ${{ matrix.image }}
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Log into registry
+                run: |
+                    echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u $DOCKER_USER --password-stdin
+                    echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+            -   name: Build
+                run: |
+                    docker image build -t $REPO_HUB/$IMAGE_ID:$VERSION ./php/$VERSION
+
+            -   name: Tag
+                run: |
+                    docker image tag $REPO_HUB/$IMAGE_ID:$VERSION $REPO_GITHUB/$IMAGE_ID:$VERSION
+
+            -   name: Push
+                run: |
+                    docker image push $REPO_HUB/$IMAGE_ID:$VERSION
+                    docker image push $REPO_GITHUB/$IMAGE_ID:$VERSION
