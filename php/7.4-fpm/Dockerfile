@@ -1,0 +1,40 @@
+FROM php:7.4-fpm
+
+RUN apt-get update \
+	&& apt-get install -y \
+		git \
+		libicu-dev \
+		libpng-dev \
+		libpq-dev \
+		libzip-dev \
+		unzip \
+		zip \
+	&& pecl install ds \
+	&& pecl install mongodb \
+	&& pecl install redis \
+	&& docker-php-ext-configure \
+		pgsql -with-pgsql=/usr/local/pgsql \
+	&& docker-php-ext-enable \
+		ds \
+		mongodb \
+		redis \
+	&& docker-php-ext-install \
+		bcmath \
+		gd \
+		intl \
+		opcache \
+		pdo \
+		pdo_mysql \
+		pdo_pgsql \
+		pgsql \
+		zip \
+	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+	&& composer global require "hirak/prestissimo:^0.3" \
+	&& apt-get clean -y \
+	&& apt-get autoclean -y \
+	&& apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/* /var/lib/log/* /tmp/* /var/tmp/*
+
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+WORKDIR /var/www
