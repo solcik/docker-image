@@ -35,7 +35,7 @@ RUN pecl install ds \
 		pgsql \
 		zip \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-	&& composer global require "hirak/prestissimo:^0.3"
+	&& composer self-update --snapshot
 
 RUN apk del \
 		autoconf \
