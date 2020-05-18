@@ -6,6 +6,7 @@ RUN apt-get update \
 		libicu-dev \
 		libpng-dev \
 		libpq-dev \
+		libxml2-dev \
 		libzip-dev \
 		unzip \
 		zip \
@@ -28,6 +29,8 @@ RUN apt-get update \
 		pdo_mysql \
 		pdo_pgsql \
 		pgsql \
+		soap \
+		sockets \
 		zip \
 	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
 	&& composer self-update --snapshot \
