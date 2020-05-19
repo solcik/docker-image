@@ -3,11 +3,14 @@ FROM php:7.4-fpm
 RUN apt-get update \
 	&& apt-get install -y \
 		git \
+		libcurl4-openssl-dev \
 		libicu-dev \
 		libpng-dev \
 		libpq-dev \
+		libssl-dev \
 		libxml2-dev \
 		libzip-dev \
+		pkg-config \
 		unzip \
 		zip \
 	&& pecl install ds \
