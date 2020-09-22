@@ -27,6 +27,7 @@ RUN apt-get update \
 		gd \
 		intl \
 		opcache \
+		pcntl \
 		pdo \
 		pdo_mysql \
 		pdo_pgsql \

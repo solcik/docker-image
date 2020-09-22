@@ -28,6 +28,7 @@ RUN apt-get update \
 		bcmath \
 		gd \
 		intl \
+		pcntl \
 		pdo \
 		pdo_mysql \
 		pdo_pgsql \
