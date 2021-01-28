@@ -4,11 +4,14 @@ RUN apt-get update \
 	&& apt-get install -y \
 		git \
 		libcurl4-openssl-dev \
+		libfreetype6-dev \
 		libicu-dev \
+		libjpeg62-turbo-dev \
 		libpng-dev \
 		libpq-dev \
 		libssl-dev \
 		libxml2-dev \
+		libwebp-dev \
 		libzip-dev \
 		pkg-config \
 		unzip \
@@ -16,8 +19,8 @@ RUN apt-get update \
 	&& pecl install ds \
 	&& pecl install mongodb \
 	&& pecl install redis \
-	&& docker-php-ext-configure \
-		pgsql -with-pgsql=/usr/local/pgsql \
+	&& docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+	&& docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp \
 	&& docker-php-ext-enable \
 		ds \
 		mongodb \
