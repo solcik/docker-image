@@ -7,7 +7,7 @@ on:
         -   cron: "0 6 * * 1" # At 08:00 on Monday
 
 jobs:
-    build:
+    build-php:
         # See also https://docs.docker.com/docker-hub/builds/
         name: PHP
         runs-on: ubuntu-20.04
@@ -44,6 +44,41 @@ jobs:
             -   name: Build
                 run: |
                     docker image build -t $REPO_HUB/$IMAGE_ID:$VERSION ./php/$VERSION
+
+            -   name: Tag
+                run: |
+                    docker image tag $REPO_HUB/$IMAGE_ID:$VERSION $REPO_GITHUB/$IMAGE_ID:$VERSION
+
+            -   name: Push
+                run: |
+                    docker image push $REPO_HUB/$IMAGE_ID:$VERSION
+                    docker image push $REPO_GITHUB/$IMAGE_ID:$VERSION
+
+    build-ci:
+        name: CI-edu
+        runs-on: ubuntu-20.04
+        strategy:
+            matrix:
+                image:
+                    - latest
+        env:
+            DOCKER_USER: ${{ secrets.DOCKER_USER }}
+            DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+            REPO_GITHUB: docker.pkg.github.com/${{ github.repository }}
+            REPO_HUB: davidsolc
+            IMAGE_ID: ci-edu
+            VERSION: ${{ matrix.image }}
+        steps:
+            -   uses: actions/checkout@v2
+
+            -   name: Log into registry
+                run: |
+                    echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u $DOCKER_USER --password-stdin
+                    echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+            -   name: Build
+                run: |
+                    docker image build -t $REPO_HUB/$IMAGE_ID:$VERSION ./ci/edu
 
             -   name: Tag
                 run: |
