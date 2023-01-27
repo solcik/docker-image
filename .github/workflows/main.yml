@@ -10,14 +10,10 @@ jobs:
     build-php:
         # See also https://docs.docker.com/docker-hub/builds/
         name: PHP
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-latest
         strategy:
             matrix:
                 image:
-                    - 7.4-fpm-alpine
-                    - 7.4-fpm-alpine-dev
-                    - 7.4-fpm
-                    - 7.4-fpm-dev
                     - 8.0-fpm-alpine
                     - 8.0-fpm-alpine-dev
                     - 8.0-fpm
@@ -26,6 +22,10 @@ jobs:
                     - 8.1-fpm-alpine-dev
                     - 8.1-fpm
                     - 8.1-fpm-dev
+                    - 8.2-fpm-alpine
+                    - 8.2-fpm-alpine-dev
+                    - 8.2-fpm
+                    - 8.2-fpm-dev
         env:
             DOCKER_USER: ${{ secrets.DOCKER_USER }}
             DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
