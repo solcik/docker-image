@@ -1,0 +1,62 @@
+FROM php:8.2-fpm
+
+RUN apt-get update \
+	&& apt-get install -y \
+		git \
+		libcurl4-openssl-dev \
+		libfreetype6-dev \
+		libicu-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+		libpq-dev \
+		libssl-dev \
+		libxml2-dev \
+		libwebp-dev \
+		libzip-dev \
+		pkg-config \
+		unzip \
+		zip \
+	&& pecl install ds \
+	&& pecl install mongodb \
+	&& pecl install redis \
+	&& pecl install xdebug \
+	&& docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+	&& docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp \
+	&& docker-php-ext-enable \
+		ds \
+		mongodb \
+		redis \
+		xdebug \
+	&& docker-php-ext-install \
+		bcmath \
+		gd \
+		intl \
+		pcntl \
+		pdo \
+		pdo_mysql \
+		pdo_pgsql \
+		pgsql \
+		soap \
+		sockets \
+		zip \
+	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+	&& composer self-update --stable \
+	&& apt-get clean -y \
+	&& apt-get autoclean -y \
+	&& apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/* /var/lib/log/* /tmp/* /var/tmp/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+VOLUME /var/run/php
+
+#COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/install-php-extensions
+#
+## Install required PHP extensions and all their prerequisites available via apt.
+#RUN chmod uga+x /usr/bin/install-php-extensions \
+#    && sync \
+#    && install-php-extensions bcmath ds exif gd intl opcache pcntl pdo_sqlsrv redis sqlsrv zip xdebug
+
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
+WORKDIR /var/www
