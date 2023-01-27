@@ -12,6 +12,7 @@ jobs:
         name: PHP
         runs-on: ubuntu-latest
         strategy:
+            fail-fast: false
             matrix:
                 image:
                     - 8.0-fpm-alpine
