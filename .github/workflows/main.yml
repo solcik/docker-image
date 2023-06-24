@@ -8,7 +8,6 @@ on:
 
 jobs:
     build-php:
-        # See also https://docs.docker.com/docker-hub/builds/
         name: PHP
         runs-on: ubuntu-latest
         strategy:
