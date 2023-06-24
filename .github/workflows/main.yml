@@ -15,16 +15,10 @@ jobs:
             fail-fast: false
             matrix:
                 image:
-                    - 8.0-fpm-alpine
-                    - 8.0-fpm-alpine-dev
                     - 8.0-fpm
                     - 8.0-fpm-dev
-                    - 8.1-fpm-alpine
-                    - 8.1-fpm-alpine-dev
                     - 8.1-fpm
                     - 8.1-fpm-dev
-                    - 8.2-fpm-alpine
-                    - 8.2-fpm-alpine-dev
                     - 8.2-fpm
                     - 8.2-fpm-dev
         env:
