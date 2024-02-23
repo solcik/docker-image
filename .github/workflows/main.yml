@@ -30,7 +30,7 @@ jobs:
             IMAGE_ID: php
             VERSION: ${{ matrix.image }}
         steps:
-            -   uses: actions/checkout@v3
+            -   uses: actions/checkout@v4
 
             -   name: Log into registry
                 run: |
