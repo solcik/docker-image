@@ -2,7 +2,11 @@ FROM php:8.3-fpm
 
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions \
+RUN apt-get update \
+	&& apt-get install -y \
+		unzip \
+		zip \
+	&& install-php-extensions \
 		bcmath \
 		gd \
 		intl \
@@ -15,7 +19,11 @@ RUN install-php-extensions \
 		soap \
 		sockets \
 		xdebug \
-		zip
+		zip \
+	&& apt-get clean -y \
+	&& apt-get autoclean -y \
+	&& apt-get autoremove -y \
+	&& rm -rf /var/lib/apt/lists/* /var/lib/log/* /tmp/* /var/tmp/*
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
