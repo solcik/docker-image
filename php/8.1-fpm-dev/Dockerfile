@@ -50,13 +50,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 VOLUME /var/run/php
 
-#COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/bin/install-php-extensions
-#
-## Install required PHP extensions and all their prerequisites available via apt.
-#RUN chmod uga+x /usr/bin/install-php-extensions \
-#    && sync \
-#    && install-php-extensions bcmath ds exif gd intl opcache pcntl pdo_sqlsrv redis sqlsrv zip xdebug
-
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 WORKDIR /var/www

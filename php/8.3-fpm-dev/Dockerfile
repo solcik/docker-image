@@ -19,6 +19,8 @@ RUN install-php-extensions \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+VOLUME /var/run/php
+
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 
 WORKDIR /var/www
