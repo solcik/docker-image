@@ -20,6 +20,8 @@ jobs:
                     - 8.1-fpm-dev
                     - 8.2-fpm
                     - 8.2-fpm-dev
+                    - 8.3-fpm
+                    - 8.3-fpm-dev
         env:
             DOCKER_USER: ${{ secrets.DOCKER_USER }}
             DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
