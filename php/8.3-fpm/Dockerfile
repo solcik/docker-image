@@ -7,6 +7,7 @@ RUN apt-get update \
 		unzip \
 		zip \
 	&& install-php-extensions \
+		apcu \
 		bcmath \
 		gd \
 		intl \
