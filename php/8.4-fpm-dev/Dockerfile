@@ -19,7 +19,7 @@ RUN apt-get update \
 		redis \
 		soap \
 		sockets \
-		xdebug-3.4.0beta1 \
+		xdebug-3.4.0 \
 		zip \
 	&& apt-get clean -y \
 	&& apt-get autoclean -y \
